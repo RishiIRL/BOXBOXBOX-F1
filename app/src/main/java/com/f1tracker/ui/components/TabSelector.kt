@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.f1tracker.R
+import com.f1tracker.ui.theme.LocalAccentColor
 
 @Composable
 fun TabSelector(
@@ -57,7 +58,7 @@ fun TabSelector(
                 .fillMaxHeight()
                 .offset(x = indicatorOffset)
                 .clip(RoundedCornerShape(8.dp))
-                .background(Color(0xFFFF0080).copy(alpha = 0.4f)) // Reduced opacity to match aesthetic
+                .background(LocalAccentColor.current.copy(alpha = 0.4f)) // Reduced opacity to match aesthetic
         )
         
         // Tab Text

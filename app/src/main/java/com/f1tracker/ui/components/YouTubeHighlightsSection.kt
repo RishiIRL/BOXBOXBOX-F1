@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.f1tracker.ui.theme.LocalAccentColor
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -123,7 +124,7 @@ private fun ViewMoreCard(
                 modifier = Modifier
                     .size(48.dp)
                     .background(
-                        Color(0xFFFF0080).copy(alpha = 0.1f),
+                        LocalAccentColor.current.copy(alpha = 0.1f),
                         androidx.compose.foundation.shape.CircleShape
                     ),
                 contentAlignment = Alignment.Center
@@ -131,7 +132,7 @@ private fun ViewMoreCard(
                 Icon(
                     imageVector = Icons.Filled.ArrowForward,
                     contentDescription = "View More",
-                    tint = Color(0xFFFF0080),
+                    tint = LocalAccentColor.current,
                     modifier = Modifier.size(24.dp)
                 )
             }
@@ -210,8 +211,8 @@ private fun YouTubeHighlightCard(
                         .background(
                             Brush.radialGradient(
                                 colors = listOf(
-                                    Color(0xFFFF0080),
-                                    Color(0xFFE6007E)
+                                    LocalAccentColor.current,
+                                    LocalAccentColor.current.copy(alpha = 0.85f)
                                 )
                             ),
                             RoundedCornerShape(32.dp)

@@ -27,22 +27,35 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.f1tracker.ui.theme.LocalAccentColor
 import java.time.LocalDateTime
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.f1tracker.R
 import com.f1tracker.data.models.ConstructorStanding
 import com.f1tracker.data.models.DriverStanding
 import com.f1tracker.data.models.Race
+import com.f1tracker.data.models.Circuit
+import com.f1tracker.data.models.Location
+import com.f1tracker.data.models.SessionInfo
+import com.f1tracker.data.models.SessionType
+import com.f1tracker.data.models.RaceWeekendState
+import com.f1tracker.data.models.UpcomingEvent
 import com.f1tracker.ui.components.ConstructorStandingsCard
 import com.f1tracker.ui.components.DriverStandingsCard
+import com.f1tracker.ui.components.FavoritesPromptCard
+import com.f1tracker.ui.components.FavoritesSelectionSheet
+import com.f1tracker.ui.components.FavoritesStatsCarousel
 import com.f1tracker.ui.components.HeroSectionFixed
 import com.f1tracker.ui.components.LastRaceCard
 import com.f1tracker.ui.components.DailyMixSection
+import com.f1tracker.data.local.FavoritesManager
+import androidx.compose.ui.platform.LocalContext
 import com.f1tracker.ui.viewmodels.MultimediaViewModel
 import com.f1tracker.ui.viewmodels.NewsViewModel
 import com.f1tracker.ui.viewmodels.RaceViewModel
 import com.f1tracker.ui.viewmodels.StandingsViewModel
 import kotlinx.coroutines.delay
+import androidx.compose.ui.tooling.preview.Preview
 
 import com.f1tracker.util.NewsCategorizer
 import com.f1tracker.util.NewsCategory
@@ -121,6 +134,41 @@ fun HomeScreen(
         )
         
         Spacer(modifier = Modifier.height(12.dp))
+        
+        // Favorites Card / Stats Carousel
+        val context = LocalContext.current
+        var hasFavorites by remember { mutableStateOf(FavoritesManager.hasFavorites(context)) }
+        var showFavoritesSheet by remember { mutableStateOf(false) }
+        // Allow user to dismiss the prompt
+        var promptDismissed by remember { mutableStateOf(false) }
+
+        if (hasFavorites) {
+            Box(modifier = Modifier.padding(horizontal = 20.dp)) {
+                FavoritesStatsCarousel(
+                    driverStandings = driverStandings,
+                    constructorStandings = constructorStandings,
+                    onEditClick = { showFavoritesSheet = true }
+                )
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+        } else if (!promptDismissed) {
+            Box(modifier = Modifier.padding(horizontal = 20.dp)) {
+                FavoritesPromptCard(
+                    onChooseClick = { showFavoritesSheet = true }
+                )
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+
+        if (showFavoritesSheet) {
+            FavoritesSelectionSheet(
+                onDismiss = { showFavoritesSheet = false },
+                onSaved = {
+                    showFavoritesSheet = false
+                    hasFavorites = true
+                }
+            )
+        }
         
         // Horizontal Scrollable Cards Section
         HorizontalCardsSection(
@@ -232,13 +280,16 @@ private fun HorizontalCardsSection(
     val brigendsFont = FontFamily(Font(R.font.brigends_expanded))
     val scrollState = rememberScrollState()
     val density = LocalDensity.current
+    val screenWidthDp = LocalConfiguration.current.screenWidthDp.dp
+    
+    // Card fills most of the screen width, leaving a small peek of the next card
+    val sidePadding = 20.dp
+    val cardSpacing = 12.dp
+    val cardWidth = screenWidthDp - (sidePadding * 2) - 16.dp // ~16dp peek of next card
     
     // Auto-scroll state
     var isUserInteracting by remember { mutableStateOf(false) }
     var currentPage by remember { mutableStateOf(0) }
-    val cardWidth = 340.dp // Actual card width from LastRaceCard
-    val cardSpacing = 12.dp
-    val sidePadding = 20.dp
     val totalCards = 3
     
     // Convert to pixels properly - full card width including spacing
@@ -247,20 +298,19 @@ private fun HorizontalCardsSection(
     // Auto-scroll effect
     LaunchedEffect(Unit) {
         while (true) {
-            delay(3000) // Wait 3 seconds
+            delay(4000) // Pause on each card for 4 seconds
             if (!isUserInteracting) {
                 // Move to next card
                 currentPage = (currentPage + 1) % totalCards
                 
                 // Calculate exact pixel position for this card
-                // Each card needs to move by full card width + spacing
                 val targetPosition = (currentPage * cardWithSpacingPx).toInt()
                 
-                // Smooth scroll to exact position
+                // Smooth scroll to exact position — suspends until animation completes
                 scrollState.animateScrollTo(
                     targetPosition,
                     animationSpec = tween(
-                        durationMillis = 800,
+                        durationMillis = 600,
                         easing = FastOutSlowInEasing
                     )
                 )
@@ -319,19 +369,22 @@ private fun HorizontalCardsSection(
             // Last Race Card
             LastRaceCard(
                 race = lastRaceResult,
-                onClick = { lastRaceResult?.let { onRaceClick(it) } }
+                onClick = { lastRaceResult?.let { onRaceClick(it) } },
+                modifier = Modifier.width(cardWidth)
             )
             
             // Driver Standings Card
             DriverStandingsCard(
                 standings = driverStandings,
-                onClick = { onNavigateToStandings(0) }
+                onClick = { onNavigateToStandings(0) },
+                modifier = Modifier.width(cardWidth)
             )
             
             // Constructor Standings Card
             ConstructorStandingsCard(
                 standings = constructorStandings,
-                onClick = { onNavigateToStandings(1) }
+                onClick = { onNavigateToStandings(1) },
+                modifier = Modifier.width(cardWidth)
             )
         }
     }
@@ -374,14 +427,13 @@ private fun PlaceholderCard(
                     text = title,
                     fontFamily = brigendsFont,
                     fontSize = 12.sp,
-                    color = Color(0xFFFF0080), // Match Hero Section pink accent
+                    color = LocalAccentColor.current, // Match Hero Section accent
                     letterSpacing = 2.sp
                 )
                 Text(
                     text = subtitle,
-                    fontFamily = michromaFont,
-                    fontSize = 10.sp,
-                    color = Color.White.copy(alpha = 0.7f), // Match Hero Section
+                    fontSize = 11.sp,
+                    color = Color.White.copy(alpha = 0.7f),
                     modifier = Modifier.padding(top = 4.dp)
                 )
             }
@@ -395,7 +447,6 @@ private fun PlaceholderCard(
             ) {
                 Text(
                     text = "Coming Soon",
-                    fontFamily = michromaFont,
                     fontSize = 12.sp,
                     color = Color.White.copy(alpha = 0.3f)
                 )
@@ -404,3 +455,92 @@ private fun PlaceholderCard(
     }
 }
 
+// ─── Preview ─────────────────────────────────────────────────────────────────
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF000000,
+    name = "Home Screen - ComingUp",
+    widthDp = 400,
+    heightDp = 900
+)
+@Composable
+private fun HomeScreenPreview() {
+    val mockRace = Race(
+        season = "2025",
+        round = "3",
+        url = "",
+        raceName = "Australian Grand Prix",
+        circuit = Circuit(
+            circuitId = "albert_park",
+            url = "",
+            circuitName = "Albert Park Grand Prix Circuit",
+            location = Location("-37.8497", "144.968", "Melbourne", "Australia")
+        ),
+        date = "2025-03-16",
+        time = "04:00:00Z",
+        firstPractice = SessionInfo("2025-03-14", "01:30:00Z"),
+        secondPractice = SessionInfo("2025-03-14", "05:00:00Z"),
+        thirdPractice = SessionInfo("2025-03-15", "01:30:00Z"),
+        qualifying = SessionInfo("2025-03-15", "05:00:00Z"),
+        sprint = null,
+        sprintQualifying = null,
+        results = null
+    )
+
+    val mockState = RaceWeekendState.ComingUp(
+        race = mockRace,
+        nextMainEvent = SessionInfo("2025-03-15", "05:00:00Z"),
+        nextMainEventType = SessionType.QUALIFYING,
+        upcomingEvents = listOf(
+            UpcomingEvent(SessionType.FP1, SessionInfo("2025-03-14", "01:30:00Z"), isCompleted = true),
+            UpcomingEvent(SessionType.FP2, SessionInfo("2025-03-14", "05:00:00Z"), isCompleted = true),
+            UpcomingEvent(SessionType.FP3, SessionInfo("2025-03-15", "01:30:00Z")),
+            UpcomingEvent(SessionType.QUALIFYING, SessionInfo("2025-03-15", "05:00:00Z"), isNext = true),
+            UpcomingEvent(SessionType.RACE, SessionInfo("2025-03-16", "04:00:00Z"))
+        )
+    )
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black)
+            .verticalScroll(rememberScrollState())
+    ) {
+        HeroSectionFixed(
+            state = mockState,
+            getCountdown = { "2d 14h 23m 45s" }
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        HorizontalCardsSection(
+            lastRaceResult = null,
+            driverStandings = null,
+            constructorStandings = null
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+    }
+}
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF000000,
+    name = "Home Screen - Loading",
+    widthDp = 400,
+    heightDp = 500
+)
+@Composable
+private fun HomeScreenLoadingPreview() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black)
+    ) {
+        HeroSectionFixed(
+            state = RaceWeekendState.Loading,
+            getCountdown = { "" }
+        )
+    }
+}

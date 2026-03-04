@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.f1tracker.data.models.NewsArticle
+import com.f1tracker.ui.theme.LocalAccentColor
 import com.f1tracker.util.NewsCategorizer
 import com.f1tracker.util.NewsCategory
 
@@ -87,10 +88,10 @@ fun NewsTab(
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(50))
-                                .background(if (isSelected) Color(0xFFFF0080) else Color(0xFF1A1A1A))
+                                .background(if (isSelected) LocalAccentColor.current else Color(0xFF1A1A1A))
                                 .border(
                                     width = 1.dp,
-                                    color = if (isSelected) Color(0xFFFF0080) else Color.White.copy(alpha = 0.1f),
+                                    color = if (isSelected) LocalAccentColor.current else Color.White.copy(alpha = 0.1f),
                                     shape = RoundedCornerShape(50)
                                 )
                                 .clickable { onFilterSelected(tab) }
@@ -125,7 +126,7 @@ fun NewsTab(
             state = pullRefreshState,
             modifier = Modifier.align(Alignment.TopCenter),
             backgroundColor = Color.Black,
-            contentColor = Color(0xFFFF0080)
+            contentColor = LocalAccentColor.current
         )
     }
 }

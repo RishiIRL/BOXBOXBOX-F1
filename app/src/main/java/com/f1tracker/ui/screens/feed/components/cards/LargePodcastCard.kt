@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import com.f1tracker.ui.theme.LocalAccentColor
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -104,7 +105,7 @@ fun LargePodcastCard(
                                     .background(
                                         if (isCurrentlyPlaying) {
                                             Brush.linearGradient(
-                                                colors = listOf(Color(0xFFFF0080), Color(0xFFE6007E))
+                                                colors = listOf(LocalAccentColor.current, Color(0xFFE6007E))
                                             )
                                         } else {
                                             Brush.linearGradient(
@@ -133,7 +134,7 @@ fun LargePodcastCard(
                     modifier = Modifier
                         .align(Alignment.TopStart)
                         .padding(12.dp)
-                        .background(Color(0xFFFF0080), RoundedCornerShape(4.dp))
+                        .background(LocalAccentColor.current, RoundedCornerShape(4.dp))
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Text(
@@ -170,7 +171,7 @@ fun LargePodcastCard(
                     fontFamily = michromaFont,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    color = if (isCurrentlyPlaying) Color(0xFFFF0080) else Color.White,
+                    color = if (isCurrentlyPlaying) LocalAccentColor.current else Color.White,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )

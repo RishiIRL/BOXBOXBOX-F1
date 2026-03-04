@@ -38,23 +38,28 @@ fun ConstructorStandingsCard(
     val brigendsFont = FontFamily(Font(R.font.brigends_expanded))
     val michromaFont = FontFamily(Font(R.font.michroma))
     
+    // Get P1 team color for card tint
+    val p1TeamColor = standings?.firstOrNull()?.let { standing ->
+        F1DataProvider.getTeamByApiId(standing.constructor.constructorId)
+            ?.color?.let { Color(android.graphics.Color.parseColor("#$it")) }
+    } ?: Color.White
+
     Box(
         modifier = modifier
-            .width(340.dp)
             .height(200.dp)
             .clip(RoundedCornerShape(16.dp))
             .clickable { onClick() } // Make clickable
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        Color(0xFF161616),
-                        Color(0xFF000000)
+                        p1TeamColor.copy(alpha = 0.10f),
+                        Color(0xFF0A0A0A)
                     )
                 )
             )
             .border(
                 width = 1.dp,
-                color = Color.White.copy(alpha = 0.08f),
+                color = p1TeamColor.copy(alpha = 0.15f),
                 shape = RoundedCornerShape(16.dp)
             )
     ) {
@@ -141,14 +146,9 @@ private fun ConstructorRow(
         modifier = modifier
             .fillMaxWidth()
             .height(0.dp) // Will be sized by weight
+            .background(teamColor.copy(alpha = 0.10f))
+            .border(width = 0.5.dp, color = teamColor.copy(alpha = 0.20f))
     ) {
-        // Bold team color background
-        Box(
-            modifier = Modifier
-                .matchParentSize()
-                .background(teamColor.copy(alpha = 0.35f))
-        )
-        
         // TOP LAYER: All content together - car image, logo, and points
         Box(
             modifier = Modifier.fillMaxSize()

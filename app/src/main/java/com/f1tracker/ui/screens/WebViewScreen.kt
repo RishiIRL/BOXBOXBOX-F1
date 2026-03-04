@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.f1tracker.ui.theme.LocalAccentColor
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -216,7 +217,7 @@ private fun PulsingLogo() {
             fontSize = 48.sp,
             fontFamily = brigendsFont,
             fontWeight = FontWeight.Normal,
-            color = Color(0xFFFF0080), // Hot pink/magenta
+            color = LocalAccentColor.current, // Hot pink/magenta
             letterSpacing = 0.sp
         )
         
@@ -226,7 +227,7 @@ private fun PulsingLogo() {
             fontSize = 48.sp,
             fontFamily = brigendsFont,
             fontWeight = FontWeight.Normal,
-            color = Color(0xFFFF0080).copy(alpha = dotPulse), // Pulsing pink dot
+            color = LocalAccentColor.current.copy(alpha = dotPulse), // Pulsing pink dot
             letterSpacing = 0.sp
         )
     }

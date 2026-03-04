@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import com.f1tracker.ui.theme.LocalAccentColor
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.Font
@@ -109,7 +110,7 @@ fun PodcastDetailOverlay(
                             text = "PODCAST",
                             fontFamily = brigendsFont,
                             fontSize = 12.sp,
-                            color = Color(0xFFFF0080),
+                            color = LocalAccentColor.current,
                             letterSpacing = 2.sp
                         )
                         
@@ -173,7 +174,7 @@ private fun EpisodeRow(
             modifier = Modifier
                 .size(48.dp)
                 .background(
-                    if (isCurrentlyPlaying) Color(0xFFFF0080) else Color(0xFF1A1A1A),
+                    if (isCurrentlyPlaying) LocalAccentColor.current else Color(0xFF1A1A1A),
                     RoundedCornerShape(8.dp)
                 ),
             contentAlignment = Alignment.Center
@@ -195,7 +196,7 @@ private fun EpisodeRow(
                 text = episode.title,
                 fontFamily = michromaFont,
                 fontSize = 14.sp,
-                color = if (isCurrentlyPlaying) Color(0xFFFF0080) else Color.White,
+                color = if (isCurrentlyPlaying) LocalAccentColor.current else Color.White,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )

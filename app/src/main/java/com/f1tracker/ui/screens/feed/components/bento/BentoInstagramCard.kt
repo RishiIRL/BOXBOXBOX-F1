@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.f1tracker.data.models.InstagramPost
+import com.f1tracker.ui.theme.LocalAccentColor
 
 @Composable
 fun BentoInstagramCard(
@@ -87,7 +88,7 @@ fun BentoInstagramCard(
             ) {
                 Box(
                     modifier = Modifier
-                        .background(Color(0xFFFF0080), RoundedCornerShape(4.dp))
+                        .background(LocalAccentColor.current, RoundedCornerShape(4.dp))
                         .padding(horizontal = 6.dp, vertical = 3.dp)
                 ) {
                     Text(

@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import com.f1tracker.ui.theme.LocalAccentColor
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
@@ -181,8 +182,7 @@ fun FullScreenAudioPlayer(
                         ) {
                             CircularProgressIndicator(
                                 modifier = Modifier.size(48.dp),
-                                color = Color(0xFFFF0080),
-                                strokeWidth = 3.dp
+                                color = LocalAccentColor.current,
                             )
                             
                             Spacer(modifier = Modifier.height(16.dp))
@@ -223,7 +223,7 @@ fun FullScreenAudioPlayer(
                     text = episode.duration,
                     fontFamily = michromaFont,
                     fontSize = 10.sp,
-                    color = Color(0xFFFF0080),
+                    color = LocalAccentColor.current,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -260,8 +260,8 @@ fun FullScreenAudioPlayer(
                         },
                         valueRange = 0f..(duration.toFloat().coerceAtLeast(1f)),
                         colors = SliderDefaults.colors(
-                            thumbColor = Color(0xFFFF0080),
-                            activeTrackColor = Color(0xFFFF0080),
+                            thumbColor = LocalAccentColor.current,
+                            activeTrackColor = LocalAccentColor.current,
                             inactiveTrackColor = Color.White.copy(alpha = 0.2f)
                         ),
                         modifier = Modifier.fillMaxWidth()
@@ -355,8 +355,8 @@ fun FullScreenAudioPlayer(
                         .background(
                             Brush.linearGradient(
                                 colors = listOf(
-                                    Color(0xFFFF0080),
-                                    Color(0xFFE6007E)
+                                    LocalAccentColor.current,
+                                    LocalAccentColor.current.copy(alpha = 0.85f)
                                 )
                             )
                         )

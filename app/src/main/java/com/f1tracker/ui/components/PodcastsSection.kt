@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import com.f1tracker.ui.theme.LocalAccentColor
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -177,7 +178,7 @@ fun PodcastsSection(
                                 text = "EPISODES",
                                 fontFamily = brigendsFont,
                                 fontSize = 12.sp,
-                                color = Color(0xFFFF0080),
+                                color = LocalAccentColor.current,
                                 letterSpacing = 2.sp
                             )
                             
@@ -288,7 +289,7 @@ private fun FeaturedEpisodeCard(
                     modifier = Modifier
                         .size(40.dp)
                         .background(
-                            if (isCurrentlyPlaying) Color(0xFFFF0080) else Color.White.copy(alpha = 0.2f),
+                            if (isCurrentlyPlaying) LocalAccentColor.current else Color.White.copy(alpha = 0.2f),
                             androidx.compose.foundation.shape.CircleShape
                         ),
                     contentAlignment = Alignment.Center
@@ -348,7 +349,7 @@ private fun PodcastChannelCard(
             .clip(RoundedCornerShape(12.dp))
             .border(
                 width = if (isSelected) 2.dp else 0.dp,
-                color = if (isSelected) Color(0xFFFF0080) else Color.Transparent,
+                color = if (isSelected) LocalAccentColor.current else Color.Transparent,
                 shape = RoundedCornerShape(12.dp)
             )
             .clickable { onPodcastClick(podcast) }
@@ -382,7 +383,7 @@ private fun PodcastChannelCard(
                 text = podcast.name,
                 fontFamily = michromaFont,
                 fontSize = 12.sp,
-                color = if (isSelected) Color(0xFFFF0080) else Color.White,
+                color = if (isSelected) LocalAccentColor.current else Color.White,
                 fontWeight = FontWeight.Bold,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
@@ -421,7 +422,7 @@ private fun PodcastEpisodeRow(
             modifier = Modifier
                 .size(32.dp)
                 .background(
-                    if (isCurrentlyPlaying) Color(0xFFFF0080) else Color(0xFF2C2C2E),
+                    if (isCurrentlyPlaying) LocalAccentColor.current else Color(0xFF2C2C2E),
                     androidx.compose.foundation.shape.CircleShape
                 ),
             contentAlignment = Alignment.Center
@@ -443,7 +444,7 @@ private fun PodcastEpisodeRow(
                 text = episode.title,
                 fontFamily = michromaFont,
                 fontSize = 12.sp,
-                color = if (isCurrentlyPlaying) Color(0xFFFF0080) else Color.White,
+                color = if (isCurrentlyPlaying) LocalAccentColor.current else Color.White,
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis

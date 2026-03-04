@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import com.f1tracker.ui.theme.LocalAccentColor
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -61,7 +62,7 @@ fun MiniAudioPlayer(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(2.dp),
-                            color = Color(0xFFFF0080),
+                            color = LocalAccentColor.current,
                             trackColor = Color.White.copy(alpha = 0.08f),
                             strokeCap = StrokeCap.Square
                         )
@@ -110,7 +111,7 @@ fun MiniAudioPlayer(
                         Box(
                             modifier = Modifier
                                 .size(36.dp)
-                                .background(Color(0xFFFF0080))
+                                .background(LocalAccentColor.current)
                                 .clickable { onPlayPause() },
                             contentAlignment = Alignment.Center
                         ) {

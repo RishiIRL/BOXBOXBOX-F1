@@ -18,6 +18,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.f1tracker.ui.theme.LocalAccentColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -343,7 +344,7 @@ fun YouTubePlayerScreen(
                             )
                         ),
                         fontSize = 16.sp,
-                        color = Color(0xFFFF0080),
+                        color = LocalAccentColor.current,
                         letterSpacing = 2.sp
                     )
                     Text(
@@ -355,7 +356,7 @@ fun YouTubePlayerScreen(
                             )
                         ),
                         fontSize = 16.sp,
-                        color = Color(0xFFFF0080),
+                        color = LocalAccentColor.current,
                         modifier = Modifier.offset(y = 1.dp)
                     )
                 }

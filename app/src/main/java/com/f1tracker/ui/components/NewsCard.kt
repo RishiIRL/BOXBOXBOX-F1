@@ -32,6 +32,7 @@ import androidx.compose.foundation.border
 import androidx.compose.ui.graphics.Brush
 import com.f1tracker.util.NewsCategorizer
 import com.f1tracker.util.NewsCategory
+import com.f1tracker.ui.theme.LocalAccentColor
 
 val michromaFont = FontFamily(
     Font(R.font.michroma, FontWeight.Normal)
@@ -50,6 +51,7 @@ fun NewsCard(
     showDescription: Boolean = true
 ) {
     val category = remember(article.headline) { NewsCategorizer.categorize(article.headline) }
+    val accentColor = LocalAccentColor.current
     
     // Pulsing animation for Nuclear news
     val infiniteTransition = rememberInfiniteTransition(label = "pulsing")
@@ -64,8 +66,8 @@ fun NewsCard(
     )
 
     val borderColor = when (category) {
-        NewsCategory.NUCLEAR -> Color(0xFFFF0080).copy(alpha = pulseAlpha)
-        NewsCategory.MAJOR -> Color(0xFFFF0080).copy(alpha = 0.6f)
+        NewsCategory.NUCLEAR -> accentColor.copy(alpha = pulseAlpha)
+        NewsCategory.MAJOR -> accentColor.copy(alpha = 0.6f)
         else -> Color.Transparent
     }
 
@@ -111,7 +113,7 @@ fun NewsCard(
                             Box(
                                 modifier = Modifier
                                     .padding(12.dp)
-                                    .background(Color(0xFFFF0080), RoundedCornerShape(4.dp))
+                                    .background(accentColor, RoundedCornerShape(4.dp))
                                     .padding(horizontal = 8.dp, vertical = 4.dp)
                                     .align(Alignment.TopStart)
                             ) {
@@ -198,7 +200,7 @@ fun NewsCard(
                         text = formatPublishedDate(article.published),
                         fontFamily = michromaFont,
                         fontSize = 9.sp,
-                        color = Color(0xFFFF0080),
+                        color = accentColor,
                         letterSpacing = 0.5.sp
                     )
                 }
@@ -293,6 +295,7 @@ fun NewsSection(
 private fun ViewMoreCard(
     onClick: () -> Unit
 ) {
+    val viewMoreAccent = LocalAccentColor.current
     Box(
         modifier = Modifier
             .width(160.dp) // Match other sections
@@ -322,7 +325,7 @@ private fun ViewMoreCard(
                 modifier = Modifier
                     .size(48.dp)
                     .background(
-                        Color(0xFFFF0080).copy(alpha = 0.1f),
+                        viewMoreAccent.copy(alpha = 0.1f),
                         androidx.compose.foundation.shape.CircleShape
                     ),
                 contentAlignment = Alignment.Center
@@ -330,7 +333,7 @@ private fun ViewMoreCard(
                 Icon(
                     imageVector = Icons.Filled.ArrowForward,
                     contentDescription = "View More",
-                    tint = Color(0xFFFF0080),
+                    tint = viewMoreAccent,
                     modifier = Modifier.size(24.dp)
                 )
             }

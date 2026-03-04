@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import com.f1tracker.ui.theme.LocalAccentColor
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -34,7 +35,7 @@ fun UpdateDialog(
 ) {
     val michromaFont = FontFamily(Font(R.font.michroma, FontWeight.Normal))
     val brigendsFont = FontFamily(Font(R.font.brigends_expanded, FontWeight.Normal))
-    val accentColor = Color(0xFFFF0080)
+    val accentColor = LocalAccentColor.current
     
 
     Dialog(

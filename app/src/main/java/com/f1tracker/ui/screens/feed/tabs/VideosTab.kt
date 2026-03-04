@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.f1tracker.data.models.F1Video
 import com.f1tracker.ui.screens.feed.components.cards.VideoCard
+import com.f1tracker.ui.theme.LocalAccentColor
 
 @Composable
 fun VideosTab(
@@ -126,10 +127,10 @@ fun VideosTab(
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(50))
-                            .background(if (isSelected) Color(0xFFFF0080) else Color(0xFF1A1A1A))
+                            .background(if (isSelected) LocalAccentColor.current else Color(0xFF1A1A1A))
                             .border(
                                 width = 1.dp,
-                                color = if (isSelected) Color(0xFFFF0080) else Color.White.copy(alpha = 0.15f),
+                                color = if (isSelected) LocalAccentColor.current else Color.White.copy(alpha = 0.15f),
                                 shape = RoundedCornerShape(50)
                             )
                             .clickable { onFilterSelected(filter) }

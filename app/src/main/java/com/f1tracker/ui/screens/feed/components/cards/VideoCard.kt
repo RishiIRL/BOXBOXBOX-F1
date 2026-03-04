@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.f1tracker.data.models.F1Video
 import com.f1tracker.ui.screens.feed.util.formatPublishedDate
+import com.f1tracker.ui.theme.LocalAccentColor
 
 @Composable
 fun VideoCard(
@@ -87,7 +88,7 @@ fun VideoCard(
                         modifier = Modifier
                             .align(Alignment.TopStart)
                             .padding(12.dp)
-                            .background(Color(0xFFFF0080), RoundedCornerShape(4.dp))
+                            .background(LocalAccentColor.current, RoundedCornerShape(4.dp))
                             .padding(horizontal = 8.dp, vertical = 4.dp)
                     ) {
                         Text(

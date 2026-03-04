@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.f1tracker.R
+import com.f1tracker.ui.theme.LocalAccentColor
 
 @Composable
 fun BottomNavBar(
@@ -38,8 +39,8 @@ fun BottomNavBar(
         Font(R.font.brigends_expanded, FontWeight.Normal)
     )
     
-    // Pink accent from header
-    val accentColor = Color(0xFFFF0080)
+    // Accent color from UI mode
+    val accentColor = LocalAccentColor.current
     
     Box(
         modifier = Modifier

@@ -15,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import com.f1tracker.ui.theme.LocalAccentColor
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -189,8 +190,8 @@ private fun HomeEpisodeCard(
                                 if (isCurrentlyPlaying) {
                                     Brush.linearGradient(
                                         colors = listOf(
-                                            Color(0xFFFF0080),
-                                            Color(0xFFE6007E)
+                                            LocalAccentColor.current,
+                                            LocalAccentColor.current.copy(alpha = 0.85f)
                                         )
                                     )
                                 } else {
@@ -219,13 +220,12 @@ private fun HomeEpisodeCard(
             // Episode info
             Text(
                 text = episode.title,
-                fontFamily = michromaFont,
-                fontSize = 10.sp,
-                color = if (isCurrentlyPlaying) Color(0xFFFF0080) else Color.White,
+                fontSize = 11.sp,
+                color = if (isCurrentlyPlaying) LocalAccentColor.current else Color.White,
                 fontWeight = if (isCurrentlyPlaying) FontWeight.Bold else FontWeight.Normal,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                lineHeight = 12.sp
+                lineHeight = 14.sp
             )
         }
     }
@@ -261,7 +261,7 @@ private fun ViewMoreCard(
                 modifier = Modifier
                     .size(48.dp)
                     .background(
-                        Color(0xFFFF0080).copy(alpha = 0.1f),
+                        LocalAccentColor.current.copy(alpha = 0.1f),
                         androidx.compose.foundation.shape.CircleShape
                     ),
                 contentAlignment = Alignment.Center
@@ -269,7 +269,7 @@ private fun ViewMoreCard(
                 Icon(
                     imageVector = Icons.Filled.ArrowForward,
                     contentDescription = "View More",
-                    tint = Color(0xFFFF0080),
+                    tint = LocalAccentColor.current,
                     modifier = Modifier.size(24.dp)
                 )
             }

@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.Font
+import com.f1tracker.ui.theme.LocalAccentColor
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -110,7 +111,7 @@ fun ScheduleScreen(
                     androidx.compose.material3.Icon(
                         imageVector = if (page == 0) Icons.Filled.EventBusy else Icons.Filled.History,
                         contentDescription = null,
-                        tint = Color(0xFFFF0080).copy(alpha = 0.5f),
+                        tint = LocalAccentColor.current.copy(alpha = 0.5f),
                         modifier = Modifier.size(48.dp)
                     )
                     Spacer(modifier = Modifier.height(16.dp))
@@ -124,8 +125,7 @@ fun ScheduleScreen(
                     )
                     Text(
                         text = if (page == 0) "Season concluded or calendar pending" else "Season hasn't started yet",
-                        fontFamily = michromaFont,
-                        fontSize = 10.sp,
+                        fontSize = 11.sp,
                         color = Color.White.copy(alpha = 0.4f),
                         modifier = Modifier.padding(top = 4.dp)
                     )
@@ -203,7 +203,7 @@ private fun UpcomingRaceCard(
     }
 
     val raceTimeIST = formatTimeIST(race.date, race.time)
-    val accent = Color(0xFFFF0080)
+    val accent = LocalAccentColor.current
 
     Box(
         modifier = Modifier
@@ -293,8 +293,7 @@ private fun UpcomingRaceCard(
             // Country • Circuit
             Text(
                 text = "${race.circuit.location.country.uppercase()} • ${race.circuit.circuitName}",
-                fontFamily = michromaFont,
-                fontSize = 8.sp,
+                fontSize = 10.sp,
                 color = Color.White.copy(alpha = 0.6f),
                 letterSpacing = 0.3.sp,
                 maxLines = 1,
@@ -431,7 +430,7 @@ private fun getFlagColors(country: String): Pair<Color, Color> {
         "netherlands" -> Pair(Color(0xFF21468B), Color(0xFFAE1C28))
         "azerbaijan" -> Pair(Color(0xFF00B5E2), Color(0xFFEF3340))
         "miami" -> Pair(Color(0xFF3C3B6E), Color(0xFFB22234))
-        else -> Pair(Color(0xFF1A0033), Color(0xFFFF0080))
+        else -> Pair(Color(0xFF1A0033), Color(0xFFE10600))
     }
 }
 

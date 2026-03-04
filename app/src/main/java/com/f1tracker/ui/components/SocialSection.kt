@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.f1tracker.R
 import com.f1tracker.data.models.InstagramPost
+import com.f1tracker.ui.theme.LocalAccentColor
 import com.f1tracker.ui.screens.feed.components.InstagramPostCard
 
 import androidx.compose.foundation.border
@@ -139,7 +140,7 @@ private fun SocialViewMoreCard(
                 modifier = Modifier
                     .size(48.dp)
                     .background(
-                        Color(0xFFFF0080).copy(alpha = 0.1f),
+                        LocalAccentColor.current.copy(alpha = 0.1f),
                         androidx.compose.foundation.shape.CircleShape
                     ),
                 contentAlignment = Alignment.Center
@@ -147,7 +148,7 @@ private fun SocialViewMoreCard(
                 Icon(
                     imageVector = Icons.Filled.ArrowForward,
                     contentDescription = "View More",
-                    tint = Color(0xFFFF0080),
+                    tint = LocalAccentColor.current,
                     modifier = Modifier.size(24.dp)
                 )
             }

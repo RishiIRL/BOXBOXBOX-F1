@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import com.f1tracker.ui.theme.LocalAccentColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
@@ -54,7 +55,7 @@ fun SessionResultsScreen(
 ) {
     val brigendsFont = FontFamily(Font(R.font.brigends_expanded, FontWeight.Normal))
     val michromaFont = FontFamily(Font(R.font.michroma, FontWeight.Normal))
-    val accentColor = Color(0xFFFF0080)
+    val accentColor = LocalAccentColor.current
     val context = LocalContext.current
     val activity = context as? android.app.Activity
     
@@ -485,7 +486,7 @@ private fun DriverResultRow(
                 text = result.time,
                 fontFamily = michromaFont,
                 fontSize = 12.sp,
-                color = if (result.position == 1) Color(0xFFFF0080) else Color.White.copy(alpha = 0.8f),
+                color = if (result.position == 1) LocalAccentColor.current else Color.White.copy(alpha = 0.8f),
                 fontWeight = if (result.position == 1) FontWeight.Bold else FontWeight.Normal
             )
         }
@@ -535,7 +536,7 @@ private fun SessionHighlightCard(
                     Box(
                         modifier = Modifier
                             .size(40.dp)
-                            .background(Color(0xFFFF0080).copy(alpha = 0.9f), CircleShape),
+                            .background(LocalAccentColor.current.copy(alpha = 0.9f), CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(

@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.f1tracker.ui.theme.LocalAccentColor
 
 /**
  * Uniform glassmorphic loading indicator used across:
@@ -48,7 +49,7 @@ fun GlassmorphicLoadingIndicator() {
     ) {
         CircularProgressIndicator(
             modifier = Modifier.size(32.dp),
-            color = Color(0xFFFF0080),
+            color = LocalAccentColor.current,
             strokeWidth = 3.dp
         )
     }

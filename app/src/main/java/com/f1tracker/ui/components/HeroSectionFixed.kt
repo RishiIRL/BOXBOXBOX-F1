@@ -33,6 +33,7 @@ import coil.compose.AsyncImage
 import com.f1tracker.R
 import com.f1tracker.data.models.*
 import com.f1tracker.data.local.F1DataProvider
+import com.f1tracker.ui.theme.LocalAccentColor
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -49,7 +50,7 @@ fun HeroSectionFixed(
 ) {
     val brigendsFont = FontFamily(Font(R.font.brigends_expanded, FontWeight.Normal))
     val michromaFont = FontFamily(Font(R.font.michroma, FontWeight.Normal))
-    val accentColor = Color(0xFFFF0080)
+    val accentColor = LocalAccentColor.current
     
     Box(
         modifier = modifier
@@ -102,232 +103,70 @@ private fun ComingUpHeroFixed(
     accentColor: Color,
     onRaceClick: (Race) -> Unit
 ) {
-    val targetDateTime = parseISTDateTimeFixed(state.nextMainEvent.date, state.nextMainEvent.time)
-    var countdown by remember { mutableStateOf("") }
-    
-    // Parallax State
-    val parallax by com.f1tracker.ui.util.rememberParallaxState()
-    // Animation for smooth parallax
-    val animatedHorizontalBias by animateFloatAsState(
-        targetValue = parallax.horizontalBias,
-        animationSpec = tween(100, easing = LinearEasing),
-        label = "parallaxX"
-    )
-    val animatedVerticalBias by animateFloatAsState(
-        targetValue = parallax.verticalBias,
-        animationSpec = tween(100, easing = LinearEasing),
-        label = "parallaxY"
-    )
-    
-    LaunchedEffect(targetDateTime) {
-        while (true) {
-            countdown = getCountdown(targetDateTime)
-            kotlinx.coroutines.delay(1000)
-        }
-    }
-    
-    val countryCode = getCountryCodeFixed(state.race.circuit.location.country)
-    val flagUrl = "https://flagcdn.com/w320/$countryCode.png"
-    val flagColors = getFlagColorsFixed(state.race.circuit.location.country)
-    
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(20.dp))
-            .background(
-                brush = Brush.radialGradient(
-                    colors = listOf(
-                        flagColors.first.copy(alpha = 0.5f),
-                        flagColors.second.copy(alpha = 0.35f),
-                        Color(0xFF0B0B0B)
-                    ),
-                    center = androidx.compose.ui.geometry.Offset(0f, 0f),
-                    radius = 1200f
-                )
-            )
+            .clip(RoundedCornerShape(16.dp))
+            .background(Color(0xFF111111))
             .border(
                 width = 1.dp,
-                color = Color.White.copy(alpha = 0.08f),
-                shape = RoundedCornerShape(20.dp)
+                color = Color.White.copy(alpha = 0.06f),
+                shape = RoundedCornerShape(16.dp)
             )
             .clickable { onRaceClick(state.race) }
+            .padding(horizontal = 20.dp, vertical = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        // Circuit track layout as background (Parallax Layer 1 - Deep)
-        val circuitDrawable = getCircuitDrawableById(state.race.circuit.circuitId)
-        AsyncImage(
-            model = circuitDrawable,
-            contentDescription = null,
-            modifier = Modifier
-                .matchParentSize()
-                .alpha(0.04f) // Reduced visibility further
-                .graphicsLayer {
-                    translationX = animatedHorizontalBias * 25f // Reduced intensity
-                    translationY = animatedVerticalBias * 25f
-                    scaleX = 1.1f 
-                    scaleY = 1.1f
-                },
-            contentScale = ContentScale.Crop
-        )
-        
-        // Subtle dark overlay for text readability
-        Box(
-            modifier = Modifier
-                .matchParentSize()
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            Color.Transparent,
-                            Color(0xFF000000).copy(alpha = 0.3f)
-                        )
-                    )
-                )
-        )
-        
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 16.dp), // Reduced padding
-            verticalArrangement = Arrangement.spacedBy(12.dp) // Reduced spacing
+        // Round badge + date range row
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            // Race Header
-            Row(
-                verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(accentColor.copy(alpha = 0.12f))
+                    .padding(horizontal = 10.dp, vertical = 3.dp)
             ) {
-                // Flag (Static)
-                AsyncImage(
-                    model = flagUrl,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(48.dp, 36.dp)
-                        .clip(RoundedCornerShape(6.dp)),
-                    contentScale = ContentScale.Crop
-                )
-                
-                Column {
-                    Text(
-                        text = state.race.raceName.uppercase(),
-                        fontFamily = brigendsFont,
-                        fontSize = 18.sp,
-                        color = Color.White,
-                        letterSpacing = 1.sp
-                    )
-                    Text(
-                        text = formatDateRange(state.race),
-                        fontFamily = michromaFont,
-                        fontSize = 11.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White.copy(alpha = 0.7f)
-                    )
-                    Text(
-                        text = state.race.circuit.circuitName,
-                        fontFamily = michromaFont,
-                        fontSize = 11.sp,
-                        color = Color.White.copy(alpha = 0.5f)
-                    )
-                }
-            }
-            
-            // Divider
-            DividerFixed()
-            
-            // Next Main Event Section - Vertically Stacked
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp) // Reduced spacing
-            ) {
-                // 1. NEXT MAIN EVENT header
                 Text(
-                    text = "NEXT MAIN EVENT",
-                    fontFamily = brigendsFont,
-                    fontSize = 10.sp,
-                    color = accentColor.copy(alpha = 0.8f),
-                    letterSpacing = 2.sp
-                )
-                
-                // 2. Event Name (QUALIFYING)
-                Text(
-                    text = state.nextMainEventType.displayName().uppercase(),
-                    fontFamily = brigendsFont,
-                    fontSize = 18.sp,
-                    color = Color.White,
+                    text = "ROUND ${state.race.round}",
+                    fontFamily = michromaFont,
+                    fontSize = 9.sp,
+                    color = accentColor,
                     letterSpacing = 1.sp
                 )
-                
-                // 3. Countdown
-                CountdownBoxFixed(
-                    countdown = countdown,
-                    michromaFont = michromaFont,
-                    accentColor = accentColor
-                )
-                
-                // 4. Date & Time - Now below countdown
-                Text(
-                    text = formatFullDateTime(targetDateTime),
-                    fontFamily = michromaFont,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White.copy(alpha = 0.8f)
-                )
-                
-                // 5. Weather
-                val nextEventWeather = state.upcomingEvents.find { it.sessionType == state.nextMainEventType }?.weather
-                if (nextEventWeather != null) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        MinimalWeatherIcon(
-                            weatherIcon = nextEventWeather.weatherIcon,
-                            size = 16.dp,
-                            color = Color.White.copy(alpha = 0.8f),
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Text(
-                            text = "${nextEventWeather.temperature}°C",
-                            fontFamily = michromaFont,
-                            fontSize = 12.sp,
-                            color = Color.White.copy(alpha = 0.8f)
-                        )
-                        Icon(
-                            imageVector = Icons.Filled.WaterDrop,
-                            contentDescription = "Rain",
-                            tint = Color(0xFF4FC3F7),
-                            modifier = Modifier.size(12.dp)
-                        )
-                        Text(
-                            text = "${nextEventWeather.rainChance}%",
-                            fontFamily = michromaFont,
-                            fontSize = 11.sp,
-                            color = Color(0xFF4FC3F7)
-                        )
-                    }
-                }
             }
-            
-            // Divider
-            DividerFixed()
-            
-            // Weekend Schedule - Horizontal Scroll with Priority
-            Column(
-                verticalArrangement = Arrangement.spacedBy(6.dp) // Reduced spacing
-            ) {
-                Text(
-                    text = "WEEKEND SCHEDULE",
-                    fontFamily = brigendsFont,
-                    fontSize = 10.sp,
-                    color = Color.White.copy(alpha = 0.5f),
-                    letterSpacing = 2.sp
-                )
-                
-                HorizontalScrollableSchedule(
-                    events = state.upcomingEvents.filter { !it.sessionType.isMainEvent() || it.sessionType != state.nextMainEventType },
-                    michromaFont = michromaFont,
-                    accentColor = accentColor
-                )
-            }
+            Text(
+                text = "•",
+                fontSize = 10.sp,
+                color = Color.White.copy(alpha = 0.25f)
+            )
+            Text(
+                text = formatDateRange(state.race).uppercase(),
+                fontSize = 11.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.White.copy(alpha = 0.5f)
+            )
         }
+
+        // Race name
+        Text(
+            text = state.race.raceName.uppercase(),
+            fontFamily = brigendsFont,
+            fontSize = 20.sp,
+            color = Color.White,
+            letterSpacing = 1.sp,
+            lineHeight = 26.sp
+        )
+
+        DividerFixed()
+
+        // Weekend schedule — all sessions in a compact scrollable row
+        CompactScheduleRow(
+            events = state.upcomingEvents,
+            michromaFont = michromaFont,
+            accentColor = accentColor
+        )
     }
 }
 
@@ -427,40 +266,72 @@ private fun ActiveWeekendHeroFixed(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(horizontal = 20.dp, vertical = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // Race Header
+            // Top: Round badge
             Row(
-                verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                // Flag (Static)
-                AsyncImage(
-                    model = flagUrl,
-                    contentDescription = null,
+                Box(
                     modifier = Modifier
-                        .size(48.dp, 36.dp)
-                        .clip(RoundedCornerShape(6.dp)),
-                    contentScale = ContentScale.Crop
-                )
-                
-                Column {
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(accentColor.copy(alpha = 0.15f))
+                        .border(1.dp, accentColor.copy(alpha = 0.3f), RoundedCornerShape(20.dp))
+                        .padding(horizontal = 10.dp, vertical = 3.dp)
+                ) {
                     Text(
-                        text = state.race.raceName.uppercase(),
-                        fontFamily = brigendsFont,
-                        fontSize = 18.sp,
-                        color = Color.White,
+                        text = "ROUND ${state.race.round}",
+                        fontFamily = michromaFont,
+                        fontSize = 9.sp,
+                        color = accentColor,
                         letterSpacing = 1.sp
                     )
-                    Text(
-                        text = state.race.circuit.circuitName,
-                        fontFamily = michromaFont,
-                        fontSize = 11.sp,
-                        color = Color.White.copy(alpha = 0.5f)
-                    )
                 }
+                Text(
+                    text = "•",
+                    fontSize = 10.sp,
+                    color = Color.White.copy(alpha = 0.3f)
+                )
+                Text(
+                    text = "RACE WEEK",
+                    fontFamily = michromaFont,
+                    fontSize = 9.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF00FF41),
+                    letterSpacing = 1.sp
+                )
             }
+            
+            // Flag centered
+            AsyncImage(
+                model = flagUrl,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(56.dp, 40.dp)
+                    .clip(RoundedCornerShape(6.dp)),
+                contentScale = ContentScale.Crop
+            )
+            
+            // Race Name centered
+            Text(
+                text = state.race.raceName.uppercase(),
+                fontFamily = brigendsFont,
+                fontSize = 22.sp,
+                color = Color.White,
+                letterSpacing = 1.5.sp,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                lineHeight = 28.sp
+            )
+            
+            // Circuit name
+            Text(
+                text = state.race.circuit.circuitName,
+                fontSize = 12.sp,
+                color = Color.White.copy(alpha = 0.5f)
+            )
             
             // Live Event or Next Session Countdown
             if (state.currentEvent != null) {
@@ -609,7 +480,6 @@ private fun NextSessionCountdown(
         
         Text(
             text = formatCountdownDateTime(targetDateTime),
-            fontFamily = michromaFont,
             fontSize = 12.sp,
             color = Color.White.copy(alpha = 0.6f)
         )
@@ -749,6 +619,71 @@ private fun HorizontalScrollableSchedule(
 }
 
 @Composable
+private fun CompactScheduleRow(
+    events: List<UpcomingEvent>,
+    michromaFont: FontFamily,
+    accentColor: Color
+) {
+    val sortedEvents = events.sortedBy { it.sessionType.priority() }
+    
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
+        sortedEvents.forEach { event ->
+            val eventDateTime = parseISTDateTimeFixed(event.sessionInfo.date, event.sessionInfo.time)
+            val isHighPriority = event.sessionType.isMainEvent()
+            val isCompleted = event.isCompleted
+            
+            Column(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(
+                        when {
+                            isCompleted -> Color(0xFF00FF41).copy(alpha = 0.06f)
+                            isHighPriority -> accentColor.copy(alpha = 0.10f)
+                            else -> Color.White.copy(alpha = 0.05f)
+                        }
+                    )
+                    .let {
+                        if (isCompleted) it.border(1.dp, Color(0xFF00FF41).copy(alpha = 0.15f), RoundedCornerShape(10.dp))
+                        else it
+                    }
+                    .padding(horizontal = 14.dp, vertical = 8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
+                // Session name
+                Text(
+                    text = event.sessionType.displayName(),
+                    fontFamily = michromaFont,
+                    fontSize = 11.sp,
+                    fontWeight = if (isHighPriority) FontWeight.Bold else FontWeight.Normal,
+                    color = when {
+                        isCompleted -> Color(0xFF00FF41).copy(alpha = 0.8f)
+                        isHighPriority -> accentColor
+                        else -> Color.White.copy(alpha = 0.8f)
+                    },
+                    maxLines = 1
+                )
+                // Day + Time
+                Text(
+                    text = formatDayTime(eventDateTime),
+                    fontSize = 9.sp,
+                    color = when {
+                        isCompleted -> Color(0xFF00FF41).copy(alpha = 0.5f)
+                        else -> Color.White.copy(alpha = 0.5f)
+                    },
+                    maxLines = 1
+                )
+            }
+        }
+    }
+}
+
+@Composable
 private fun PrioritySessionCard(
     event: UpcomingEvent,
     michromaFont: FontFamily,
@@ -839,7 +774,6 @@ private fun PrioritySessionCard(
             }
             Text(
                 text = formatDayTime(eventDateTime),
-                fontFamily = michromaFont,
                 fontSize = 11.sp,
                 color = when {
                     isCompleted -> Color(0xFF00FF41).copy(alpha = 0.5f)
@@ -852,7 +786,6 @@ private fun PrioritySessionCard(
         if (isCompleted) {
             Text(
                 text = "COMPLETED",
-                fontFamily = michromaFont,
                 fontSize = 9.sp,
                 color = Color(0xFF00FF41).copy(alpha = 0.7f),
                 letterSpacing = 1.sp,
@@ -966,7 +899,6 @@ private fun LiveBannerFixed(
                 }
                 Text(
                     text = "Ends in $countdown",
-                    fontFamily = michromaFont,
                     fontSize = 10.sp,
                     color = Color.White.copy(alpha = 0.6f)
                 )
@@ -1098,7 +1030,6 @@ private fun CompletedCard(
         } else {
              Text(
                 text = "Results pending...",
-                fontFamily = michromaFont,
                 fontSize = 10.sp,
                 color = Color.White.copy(alpha = 0.4f)
             )
@@ -1178,7 +1109,7 @@ private fun ErrorHeroFixed(message: String, brigendsFont: FontFamily) {
                 text = "ERROR",
                 fontFamily = brigendsFont,
                 fontSize = 14.sp,
-                color = Color(0xFFFF0080),
+                color = LocalAccentColor.current,
                 letterSpacing = 2.sp
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -1322,7 +1253,7 @@ private fun getFlagColorsFixed(country: String): Pair<Color, Color> {
         "netherlands" -> Pair(Color(0xFF21468B), Color(0xFFAE1C28))
         "azerbaijan" -> Pair(Color(0xFF00B5E2), Color(0xFFEF3340))
         "miami" -> Pair(Color(0xFF3C3B6E), Color(0xFFB22234))
-        else -> Pair(Color(0xFF1A0033), Color(0xFFFF0080))
+        else -> Pair(Color(0xFF1A0033), Color(0xFFE10600))
     }
 }
 

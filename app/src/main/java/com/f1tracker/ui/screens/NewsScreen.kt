@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import com.f1tracker.ui.theme.LocalAccentColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -93,7 +94,7 @@ fun NewsScreen(
             indicator = { tabPositions ->
                 TabRowDefaults.Indicator(
                     Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
-                    color = Color(0xFFFF0080)
+                    color = LocalAccentColor.current
                 )
             },
             divider = {
@@ -110,7 +111,7 @@ fun NewsScreen(
                             fontFamily = michromaFont,
                             fontSize = 10.sp,
                             fontWeight = if (selectedTabIndex == index) FontWeight.Bold else FontWeight.Normal,
-                            color = if (selectedTabIndex == index) Color(0xFFFF0080) else Color.White.copy(alpha = 0.7f)
+                            color = if (selectedTabIndex == index) LocalAccentColor.current else Color.White.copy(alpha = 0.7f)
                         )
                     }
                 )

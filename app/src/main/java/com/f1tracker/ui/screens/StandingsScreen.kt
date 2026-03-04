@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import com.f1tracker.ui.theme.LocalAccentColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
@@ -135,7 +136,7 @@ fun StandingsScreen(
                                         modifier = Modifier
                                             .size(4.dp)
                                             .background(
-                                                if (isSelected) Color(0xFFFF0080) else Color.Transparent,
+                                                if (isSelected) LocalAccentColor.current else Color.Transparent,
                                                 CircleShape
                                             )
                                     )
@@ -143,7 +144,7 @@ fun StandingsScreen(
                                         text = year.toString(),
                                         fontFamily = michromaFont,
                                         fontSize = 12.sp,
-                                        color = if (isSelected) Color(0xFFFF0080) else Color.White,
+                                        color = if (isSelected) LocalAccentColor.current else Color.White,
                                         fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                                     )
                                 }
@@ -194,7 +195,7 @@ fun StandingsScreen(
                             modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
                     ) {
-                        CircularProgressIndicator(color = Color(0xFFFF0080))
+                        CircularProgressIndicator(color = LocalAccentColor.current)
                     }
                 }
                 error != null -> {
@@ -205,7 +206,6 @@ fun StandingsScreen(
                         Text(
                             text = error ?: "Unknown error",
                             color = Color.Red,
-                            fontFamily = michromaFont,
                             fontSize = 12.sp
                         )
                     }
@@ -215,7 +215,7 @@ fun StandingsScreen(
                         // Drivers Tab
                         if (driverStandings.isNullOrEmpty()) {
                             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                Text("No driver standings available", color = Color.White, fontFamily = michromaFont, fontSize = 12.sp)
+                                Text("No driver standings available", color = Color.White, fontSize = 12.sp)
                             }
                         } else {
                             DriverStandingsList(
@@ -228,7 +228,7 @@ fun StandingsScreen(
                         // Constructors Tab
                         if (constructorStandings.isNullOrEmpty()) {
                             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                Text("No constructor standings available", color = Color.White, fontFamily = michromaFont, fontSize = 12.sp)
+                                Text("No constructor standings available", color = Color.White, fontSize = 12.sp)
                             }
                         } else {
                             ConstructorStandingsList(
@@ -378,7 +378,6 @@ private fun PodiumDriverCard(
             // Team
             Text(
                 text = teamInfo?.abbreviation ?: "",
-                fontFamily = michromaFont,
                 fontSize = 10.sp,
                 color = Color.White.copy(alpha = 0.6f)
             )
@@ -391,7 +390,7 @@ private fun PodiumDriverCard(
                     text = standing.points,
                     fontFamily = michromaFont,
                     fontSize = 14.sp,
-                    color = Color(0xFFFF0080),
+                    color = LocalAccentColor.current,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
@@ -532,16 +531,15 @@ private fun DriverStandingRow(
             
             Text(
                 text = displayName,
-                fontFamily = michromaFont,
-                fontSize = 12.sp, // Reduced from 14.sp
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Medium,
                 color = Color.White,
                 maxLines = 1,
                 overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
             )
             Text(
                 text = teamInfo?.name ?: standing.constructors.firstOrNull()?.name ?: "",
-                fontFamily = michromaFont,
-                fontSize = 9.sp, // Reduced from 10.sp
+                fontSize = 10.sp,
                 color = Color.White.copy(alpha = 0.5f),
                 maxLines = 1,
                 overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
@@ -555,7 +553,7 @@ private fun DriverStandingRow(
             text = standing.points,
             fontFamily = michromaFont,
             fontSize = 14.sp, // Reduced from 16.sp
-            color = Color(0xFFFF0080),
+            color = LocalAccentColor.current,
             fontWeight = FontWeight.Bold
         )
     }
@@ -670,8 +668,8 @@ private fun ConstructorStandingRow(
         // Name
         Text(
             text = formatConstructorName(standing.constructor.name).uppercase(),
-            fontFamily = michromaFont, // Switched to second font
-            fontSize = 12.sp,
+            fontSize = 13.sp,
+            fontWeight = FontWeight.Medium,
             color = Color.White,
             modifier = Modifier.weight(1f),
             maxLines = 1,
@@ -685,7 +683,7 @@ private fun ConstructorStandingRow(
             text = standing.points,
             fontFamily = michromaFont,
             fontSize = 14.sp,
-            color = Color(0xFFFF0080),
+            color = LocalAccentColor.current,
             fontWeight = FontWeight.Bold
         )
     }
@@ -848,7 +846,7 @@ private fun PodiumConstructorCard(
                     text = standing.points,
                     fontFamily = michromaFont,
                     fontSize = 14.sp,
-                    color = Color(0xFFFF0080),
+                    color = LocalAccentColor.current,
                     fontWeight = FontWeight.Bold
                 )
                 Text(

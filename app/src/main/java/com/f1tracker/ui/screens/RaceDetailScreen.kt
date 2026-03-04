@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import com.f1tracker.ui.theme.LocalAccentColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -106,7 +107,7 @@ fun RaceDetailScreen(
                     androidx.compose.material3.Button(
                         onClick = { showCircuitLayout = false },
                         colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFFF0080)
+                            containerColor = LocalAccentColor.current
                         )
                     ) {
                         Text(
@@ -290,7 +291,7 @@ fun RaceDetailScreen(
                                         Box(
                                             modifier = Modifier
                                                 .clip(RoundedCornerShape(6.dp))
-                                                .background(if (isSelected) Color(0xFFFF0080) else Color.Transparent)
+                                                .background(if (isSelected) LocalAccentColor.current else Color.Transparent)
                                                 .clickable { selectedResultType = type }
                                                 .padding(horizontal = 12.dp, vertical = 6.dp)
                                         ) {
@@ -352,7 +353,6 @@ fun RaceDetailScreen(
                             ) {
                                 Text(
                                     text = "NO DATA AVAILABLE",
-                                    fontFamily = michromaFont,
                                     fontSize = 12.sp,
                                     color = Color.White.copy(alpha = 0.4f)
                                 )
@@ -459,7 +459,7 @@ private fun getFlagColorsForDetail(country: String): Pair<Color, Color> {
         "netherlands" -> Pair(Color(0xFF21468B), Color(0xFFAE1C28))
         "azerbaijan" -> Pair(Color(0xFF00B5E2), Color(0xFFEF3340))
         "miami" -> Pair(Color(0xFF3C3B6E), Color(0xFFB22234))
-        else -> Pair(Color(0xFF1A0033), Color(0xFFFF0080))
+        else -> Pair(Color(0xFF1A0033), Color(0xFFE10600))
     }
 }
 
@@ -532,10 +532,10 @@ private fun RaceHeaderSection(
                 text = "ROUND ${race.round}",
                 fontFamily = michromaFont,
                 fontSize = 12.sp,
-                color = Color(0xFFFF0080),
+                color = LocalAccentColor.current,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .background(Color(0xFFFF0080).copy(alpha = 0.15f), RoundedCornerShape(4.dp))
+                    .background(LocalAccentColor.current.copy(alpha = 0.15f), RoundedCornerShape(4.dp))
                     .padding(horizontal = 8.dp, vertical = 4.dp)
             )
             
@@ -564,7 +564,6 @@ private fun RaceHeaderSection(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = "${race.circuit.location.locality}, ${race.circuit.location.country}".uppercase(),
-                    fontFamily = michromaFont,
                     fontSize = 12.sp,
                     color = Color.White.copy(alpha = 0.8f)
                 )
@@ -575,7 +574,6 @@ private fun RaceHeaderSection(
             // Date
             Text(
                 text = formatDateDetail(race.date),
-                fontFamily = michromaFont,
                 fontSize = 12.sp,
                 color = Color.White.copy(alpha = 0.6f)
             )
@@ -641,7 +639,7 @@ private fun ScheduleSection(
                                     .width(4.dp)
                                     .height(24.dp)
                                     .background(
-                                        if (name == "Race") Color(0xFFFF0080) else Color.White.copy(alpha = 0.2f),
+                                        if (name == "Race") LocalAccentColor.current else Color.White.copy(alpha = 0.2f),
                                         RoundedCornerShape(2.dp)
                                     )
                             )
@@ -658,8 +656,7 @@ private fun ScheduleSection(
                         Column(horizontalAlignment = Alignment.End) {
                             Text(
                                 text = formatDateDetail(session.date).substringBefore(","),
-                                fontFamily = michromaFont,
-                                fontSize = 10.sp,
+                                fontSize = 11.sp,
                                 color = Color.White.copy(alpha = 0.5f)
                             )
                             Text(
@@ -804,7 +801,6 @@ private fun PodiumDriverCard(
             // Team
             Text(
                 text = teamInfo?.abbreviation ?: "",
-                fontFamily = michromaFont,
                 fontSize = 10.sp,
                 color = Color.White.copy(alpha = 0.6f)
             )
@@ -902,14 +898,13 @@ private fun DriverResultRow(
                 
                 Text(
                     text = displayName,
-                    fontFamily = michromaFont,
                     fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
                     color = Color.White
                 )
                 Text(
                     text = teamInfo?.name ?: result.constructor.name,
-                    fontFamily = michromaFont,
-                    fontSize = 10.sp,
+                    fontSize = 11.sp,
                     color = Color.White.copy(alpha = 0.5f)
                 )
             }
@@ -921,7 +916,7 @@ private fun DriverResultRow(
                 text = "+${result.points}",
                 fontFamily = michromaFont,
                 fontSize = 12.sp,
-                color = Color(0xFFFF0080),
+                color = LocalAccentColor.current,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -1102,7 +1097,7 @@ private fun HighlightCard(
                     Box(
                         modifier = Modifier
                             .size(48.dp)
-                            .background(Color(0xFFFF0080).copy(alpha = 0.9f), CircleShape),
+                            .background(LocalAccentColor.current.copy(alpha = 0.9f), CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
@@ -1118,8 +1113,7 @@ private fun HighlightCard(
             // Title
             Text(
                 text = highlight.title,
-                fontFamily = michromaFont,
-                fontSize = 12.sp,
+                fontSize = 13.sp,
                 color = Color.White,
                 maxLines = 2,
                 overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,

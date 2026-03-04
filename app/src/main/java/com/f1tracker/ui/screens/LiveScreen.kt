@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import com.f1tracker.ui.theme.LocalAccentColor
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -124,7 +125,7 @@ fun LiveScreen(
                         modifier = Modifier
                             .size(8.dp)
                             .background(
-                                Color(0xFFFF0080).copy(alpha = pulseAlpha),
+                                LocalAccentColor.current.copy(alpha = pulseAlpha),
                                 RoundedCornerShape(4.dp)
                             )
                     )
@@ -283,10 +284,8 @@ fun LiveScreen(
                             )
                             Text(
                                 text = "Establishing live timing connection",
-                                fontFamily = michromaFont,
-                                fontSize = 10.sp,
-                                color = Color.White.copy(alpha = 0.5f),
-                                letterSpacing = 0.5.sp
+                                fontSize = 11.sp,
+                                color = Color.White.copy(alpha = 0.5f)
                             )
                         }
                     }
@@ -343,10 +342,8 @@ fun LiveScreen(
                             )
                             Text(
                                 text = "Unable to connect to live timing",
-                                fontFamily = michromaFont,
-                                fontSize = 10.sp,
-                                color = Color.White.copy(alpha = 0.5f),
-                                letterSpacing = 0.5.sp
+                                fontSize = 11.sp,
+                                color = Color.White.copy(alpha = 0.5f)
                             )
                         }
                         
@@ -359,7 +356,7 @@ fun LiveScreen(
                                     Brush.horizontalGradient(
                                         listOf(
                                             Color(0xFFE6007E),
-                                            Color(0xFFFF0080)
+                                            LocalAccentColor.current
                                         )
                                     ),
                                     RoundedCornerShape(6.dp)
@@ -454,10 +451,8 @@ fun LiveScreen(
                             )
                             Text(
                                 text = "Session data will appear shortly. If specific data is missing, the session may have ended.",
-                                fontFamily = michromaFont,
-                                fontSize = 10.sp,
+                                fontSize = 11.sp,
                                 color = Color.White.copy(alpha = 0.5f),
-                                letterSpacing = 0.5.sp,
                                 textAlign = androidx.compose.ui.text.style.TextAlign.Center
 
                             )
@@ -1401,7 +1396,7 @@ private fun NoSessionActiveScreen(
     brigendsFont: FontFamily,
     michromaFont: FontFamily
 ) {
-    val accentColor = Color(0xFFFF0080)
+    val accentColor = LocalAccentColor.current
     
     Box(
         modifier = Modifier
@@ -1523,7 +1518,6 @@ private fun NoSessionActiveScreen(
                     )
                     Text(
                         text = state.message,
-                        fontFamily = michromaFont,
                         fontSize = 12.sp,
                         color = Color.White.copy(alpha = 0.7f),
                         textAlign = androidx.compose.ui.text.style.TextAlign.Center
@@ -1603,10 +1597,8 @@ private fun NoSessionActiveScreen(
                             
                             Text(
                                 text = "See you on track in $nextSeasonYear",
-                                fontFamily = michromaFont,
-                                fontSize = 12.sp,
+                                fontSize = 13.sp,
                                 color = Color.White.copy(alpha = 0.6f),
-                                letterSpacing = 1.sp,
                                 textAlign = androidx.compose.ui.text.style.TextAlign.Center
                             )
                         }
@@ -1685,9 +1677,8 @@ private fun CountdownDisplay(
         
         Text(
             text = formatFullDateTime(dateTime),
-            fontFamily = michromaFont,
-            fontSize = 10.sp,
-            fontWeight = FontWeight.Bold,
+            fontSize = 11.sp,
+            fontWeight = FontWeight.Medium,
             color = Color.White.copy(alpha = 0.8f)
         )
         
@@ -1695,10 +1686,8 @@ private fun CountdownDisplay(
         
         Text(
             text = "Live timing will be available when a session is active",
-            fontFamily = michromaFont,
-            fontSize = 9.sp,
+            fontSize = 10.sp,
             color = Color.White.copy(alpha = 0.5f),
-            letterSpacing = 0.5.sp,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
     }
@@ -1782,7 +1771,6 @@ private fun NoUpcomingSessionsDisplay(
         )
         Text(
             text = "The current race weekend has ended.\nCheck back soon for the next event!",
-            fontFamily = michromaFont,
             fontSize = 12.sp,
             color = Color.White.copy(alpha = 0.7f),
             textAlign = androidx.compose.ui.text.style.TextAlign.Center

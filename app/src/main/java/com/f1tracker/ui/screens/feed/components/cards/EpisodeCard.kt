@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.f1tracker.ui.theme.LocalAccentColor
 import coil.compose.AsyncImage
 import com.f1tracker.data.models.PodcastEpisode
 
@@ -104,7 +105,7 @@ fun EpisodeCard(
                                 if (isCurrentlyPlaying) {
                                     Brush.linearGradient(
                                         colors = listOf(
-                                            Color(0xFFFF0080),
+                                            LocalAccentColor.current,
                                             Color(0xFFE6007E)
                                         )
                                     )
@@ -139,7 +140,7 @@ fun EpisodeCard(
                     text = episode.title,
                     fontFamily = michromaFont,
                     fontSize = 10.sp,
-                    color = if (isCurrentlyPlaying) Color(0xFFFF0080) else Color.White,
+                    color = if (isCurrentlyPlaying) LocalAccentColor.current else Color.White,
                     fontWeight = if (isCurrentlyPlaying) FontWeight.Bold else FontWeight.Normal,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,

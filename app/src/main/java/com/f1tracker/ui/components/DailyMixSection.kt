@@ -41,6 +41,7 @@ import com.f1tracker.data.models.F1Video
 import com.f1tracker.data.models.InstagramPost
 import com.f1tracker.data.models.Podcast
 import com.f1tracker.data.models.PodcastEpisode
+import com.f1tracker.ui.theme.LocalAccentColor
 
 // Design Tokens
 private val accentPink = Color(0xFFFF0080)
@@ -68,6 +69,7 @@ fun DailyMixSection(
 ) {
     val michromaFont = FontFamily(Font(R.font.michroma, FontWeight.Normal))
     val brigendsFont = FontFamily(Font(R.font.brigends_expanded, FontWeight.Normal))
+    val dynamicAccentPink = LocalAccentColor.current
     
     Column(modifier = Modifier.fillMaxWidth()) {
         // Section Header
@@ -96,7 +98,7 @@ fun DailyMixSection(
                     BentoCard(
                         modifier = Modifier.width(200.dp).fillMaxHeight(),
                         onClick = { onNewsClick(newsArticles[0].links?.web?.href) },
-                        accentColor = accentPink
+                        accentColor = dynamicAccentPink
                     ) {
                         val imageUrl = newsArticles[0].images?.firstOrNull()?.url
                         if (imageUrl != null) {
@@ -112,7 +114,7 @@ fun DailyMixSection(
                         // Icon badge
                         IconBadge(
                             icon = Icons.Default.Article,
-                            color = accentPink,
+                            color = dynamicAccentPink,
                             modifier = Modifier.align(Alignment.TopStart).padding(12.dp)
                         )
                         
@@ -124,11 +126,10 @@ fun DailyMixSection(
                         ) {
                             Text(
                                 text = newsArticles[0].headline,
-                                fontFamily = michromaFont,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Bold,
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.SemiBold,
                                 color = Color.White,
-                                lineHeight = 16.sp,
+                                lineHeight = 18.sp,
                                 maxLines = 4,
                                 overflow = TextOverflow.Ellipsis
                             )
@@ -310,11 +311,10 @@ fun DailyMixSection(
                             ) {
                                 Text(
                                     text = latestEpisode?.title ?: "Podcast",
-                                    fontFamily = michromaFont,
-                                    fontSize = 9.sp,
+                                    fontSize = 10.sp,
                                     color = Color.White,
                                     maxLines = 2,
-                                    lineHeight = 12.sp,
+                                    lineHeight = 13.sp,
                                     overflow = TextOverflow.Ellipsis
                                 )
                             }
@@ -358,10 +358,10 @@ fun DailyMixSection(
                         ) {
                             Text(
                                 text = newsArticles[1].headline,
-                                fontFamily = michromaFont,
-                                fontSize = 10.sp,
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.SemiBold,
                                 color = Color.White,
-                                lineHeight = 14.sp,
+                                lineHeight = 15.sp,
                                 maxLines = 4,
                                 overflow = TextOverflow.Ellipsis
                             )
@@ -485,8 +485,7 @@ fun DailyMixSection(
                         ) {
                             Text(
                                 text = "@${social3.author}",
-                                fontFamily = michromaFont,
-                                fontSize = 9.sp,
+                                fontSize = 10.sp,
                                 color = Color.White
                             )
                             if (social3.author == "f1") {
@@ -520,7 +519,7 @@ fun DailyMixSection(
                             BentoCard(
                                 modifier = Modifier.weight(1f).fillMaxWidth(),
                                 onClick = { onNewsClick(news3.links?.web?.href) },
-                                accentColor = accentPink
+                                accentColor = dynamicAccentPink
                             ) {
                                 val imageUrl = news3.images?.firstOrNull()?.url
                                 if (imageUrl != null) {
@@ -535,7 +534,7 @@ fun DailyMixSection(
                                 
                                 IconBadge(
                                     icon = Icons.Default.Article,
-                                    color = accentPink,
+                                    color = dynamicAccentPink,
                                     modifier = Modifier.align(Alignment.TopStart).padding(10.dp)
                                 )
                             }

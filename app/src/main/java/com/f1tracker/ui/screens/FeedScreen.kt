@@ -28,6 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.draw.drawWithContent
+import com.f1tracker.ui.theme.LocalAccentColor
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -417,7 +418,7 @@ private fun IconTabSelector(
                     .clip(RoundedCornerShape(8.dp))
                     .background(
                         if (isSelected) {
-                            Color(0xFFFF0080).copy(alpha = 0.02f)
+                            LocalAccentColor.current.copy(alpha = 0.02f)
                         } else {
                             Color.Transparent
                         }
@@ -426,7 +427,7 @@ private fun IconTabSelector(
                         if (isSelected) {
                             Modifier.border(
                                 width = 1.5.dp,
-                                color = Color(0xFFFF0080).copy(alpha = 0.3f),
+                                color = LocalAccentColor.current.copy(alpha = 0.3f),
                                 shape = RoundedCornerShape(8.dp)
                             )
                         } else {
@@ -443,7 +444,7 @@ private fun IconTabSelector(
                     Icon(
                         imageVector = tab.icon,
                         contentDescription = tab.label,
-                        tint = if (isSelected) Color(0xFFFF0080) else Color.Gray,
+                        tint = if (isSelected) LocalAccentColor.current else Color.Gray,
                         modifier = Modifier.size(16.dp)
                     )
                     

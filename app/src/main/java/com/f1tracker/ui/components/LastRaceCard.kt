@@ -44,23 +44,28 @@ fun LastRaceCard(
     val brigendsFont = FontFamily(Font(R.font.brigends_expanded))
     val michromaFont = FontFamily(Font(R.font.michroma))
     
+    // Get P1 team color for card tint
+    val p1TeamColor = race?.results?.firstOrNull()?.let { result ->
+        F1DataProvider.getTeamByApiId(result.constructor.constructorId)
+            ?.color?.let { Color(android.graphics.Color.parseColor("#$it")) }
+    } ?: Color.White
+
     Box(
         modifier = modifier
-            .width(340.dp)
             .height(200.dp)
             .clip(RoundedCornerShape(16.dp))
             .clickable { onClick() } // Make clickable
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        Color(0xFF161616),
-                        Color(0xFF000000)
+                        p1TeamColor.copy(alpha = 0.10f),
+                        Color(0xFF0A0A0A)
                     )
                 )
             )
             .border(
                 width = 1.dp,
-                color = Color.White.copy(alpha = 0.08f),
+                color = p1TeamColor.copy(alpha = 0.15f),
                 shape = RoundedCornerShape(16.dp)
             )
     ) {
@@ -73,7 +78,6 @@ fun LastRaceCard(
             ) {
                 Text(
                     text = "Loading...",
-                    fontFamily = michromaFont,
                     fontSize = 12.sp,
                     color = Color.White.copy(alpha = 0.3f)
                 )
@@ -168,15 +172,10 @@ private fun DriverColumn(
     Box(
         modifier = modifier
             .fillMaxHeight()
-            .clip(RectangleShape) // Clip to prevent overflow into adjacent columns
+            .clip(RectangleShape)
+            .background(teamColor.copy(alpha = 0.10f))
+            .border(width = 0.5.dp, color = teamColor.copy(alpha = 0.20f))
     ) {
-        // Bold team color background
-        Box(
-            modifier = Modifier
-                .matchParentSize()
-                .background(teamColor.copy(alpha = 0.35f)) // Solid bold team color
-        )
-        
         // Driver number background image
         if (driverInfo?.headshotNumberUrl != null) {
             AsyncImage(
